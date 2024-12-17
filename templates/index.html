@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Escalas</title>
+		
+		<link rel="stylesheet" href="/static/styles.css">
+		<script src="/static/scripts.js" defer></script>
+	</head>
+	<body onload="changeScale(), changeColor()">
+		<div class="circle"></div>
+		<div class="container">
+			
+			<h1>Escalas</h1>
+
+			<br><br><br><br><br>
+
+			<select class="dropdown" name="Notas" id="note" onchange="changeScale()">
+				<option value="1">A</option>
+				<option value="2">A#/Bb</option>
+				<option value="3">B</option>
+				<option value="4">C</option>
+				<option value="5">C#/Db</option>
+				<option value="6">D</option>
+				<option value="7">D#/Eb</option>
+				<option value="8">E</option>
+				<option value="9">F</option>
+				<option value="10">F#/Gb</option>
+				<option value="11">G</option>
+				<option value="12">G#/Ab</option>
+			</select>
+
+			<select onchange="changeScale(), changeColor()" class="dropdown" name="Escalas" id="scale">
+				<option value="0">Jónico</option>
+				<option value="1">Dórico</option>
+				<option value="2">Frigio</option>
+				<option value="3">Lidio</option>
+				<option value="4">Mixolidio</option>
+				<option value="5">Eólico</option>
+				<option value="6">Locrio</option>
+			</select>
+			
+			<br><br><br><br>
+			<div class="figures-container">
+				<div class="figure-wrapper" id="wrapper1">
+					<div class="text-above" id="text-above-1"></div>
+					<div class="figure" id="sq1">A</div>
+					<div class="text-below" id="text-below-1"></div>
+				</div>
+				<div class="figure-wrapper" id="wrapper2">
+					<div class="text-above" id="text-above-2"></div>
+					<div class="figure" id="sq2">A#/Bb</div>
+					<div class="text-below" id="text-below-2"></div>
+				</div>
+				<div class="figure-wrapper" id="wrapper3">
+					<div class="text-above" id="text-above-3"></div>
+					<div class="figure" id="sq3">B</div>
+					<div class="text-below" id="text-below-3"></div>
+				</div>
+				<div class="figure-wrapper" id="wrapper4">
+					<div class="text-above" id="text-above-4"></div>
+					<div class="figure" id="sq4">C</div>
+					<div class="text-below" id="text-below-4"></div>
+				</div>
+				<div class="figure-wrapper" id="wrapper5">
+					<div class="text-above" id="text-above-5"></div>
+					<div class="figure" id="sq5">C#/Db</div>
+					<div class="text-below" id="text-below-5"></div>
+				</div>
+				<div class="figure-wrapper" id="wrapper6">
+					<div class="text-above" id="text-above-6"></div>
+					<div class="figure" id="sq6">D</div>
+					<div class="text-below" id="text-below-6"></div>
+				</div>
+				<div class="figure-wrapper" id="wrapper7">
+					<div class="text-above" id="text-above-7"></div>
+					<div class="figure" id="sq7">D#/Eb</div>
+					<div class="text-below" id="text-below-7"></div>
+				</div>
+				<div class="figure-wrapper" id="wrapper8">
+					<div class="text-above" id="text-above-8"></div>
+					<div class="figure" id="sq8">E</div>
+					<div class="text-below" id="text-below-8"></div>
+				</div>
+				<div class="figure-wrapper" id="wrapper9">
+					<div class="text-above" id="text-above-9"></div>
+					<div class="figure" id="sq9">F</div>
+					<div class="text-below" id="text-below-9"></div>
+				</div>
+				<div class="figure-wrapper" id="wrapper10">
+					<div class="text-above" id="text-above-10"></div>
+					<div class="figure" id="sq10">F#/Gb</div>
+					<div class="text-below" id="text-below-10"></div>
+				</div>
+				<div class="figure-wrapper" id="wrapper11">
+					<div class="text-above" id="text-above-11"></div>
+					<div class="figure" id="sq11">G</div>
+					<div class="text-below" id="text-below-11"></div>
+				</div>
+				<div class="figure-wrapper" id="wrapper12">
+					<div class="text-above" id="text-above-12"></div>
+					<div class="figure" id="sq12">G#/Ab</div>
+					<div class="text-below" id="text-below-12"></div>
+				</div>
+			
+			</div>
+
+		</div>
+
+		
+	</body>
+	</html>

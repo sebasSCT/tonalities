@@ -1,0 +1,117 @@
+body {
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: normal;
+    background-color: #000000;
+    text-align: center;
+    padding: 0px;
+}
+
+.circle
+{
+    z-index: -1;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: gray;
+    transition: clip-path 0.8s ease-out;
+    clip-path: circle(0% at 50% 100%);
+}
+
+.circle.active
+{
+    clip-path: circle(100% at 59% 38%);
+}
+
+.container {
+    position: fixed;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+}
+
+/* .container.active
+{
+    transition: background 10s ease-in-out;
+} */
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 20px 0;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.figures-container {
+    display: flex;
+    flex-wrap: wrap; /* Permite que las figuras pasen a otra fila si no caben en la línea */
+    justify-content: center; /* Centra las figuras horizontalmente */
+    gap: 20px; /* Espacio entre figuras */
+    margin: 20px 0;
+}
+
+.figure {
+    width: 80px;
+    height: 80px;
+    background-color: #7a7a7a;
+    border-radius: 0%; /* Hace que sea un círculo */
+    display: flex; /* Habilita el uso de flexbox dentro de la figura */
+    align-items: center; /* Centra verticalmente el contenido */
+    justify-content: center; /* Centra horizontalmente el contenido */
+    font-size: 22px; /* Tamaño de la fuente del texto */
+    color: rgb(0, 0, 0); /* Color del texto */
+    text-align: center; /* Asegura que el texto se centre si es multilinea */
+    font-weight: normal;
+    transition: transform 0.5s ease, background-color 0.5s ease;
+}
+
+.figure.highlighted {
+    transform: translateY(20px); /* Mover hacia abajo */
+}
+
+.figure-wrapper {
+    display: flex;
+    flex-direction: column; /* Coloca los elementos en columna */
+    align-items: center; /* Centra horizontalmente los elementos */
+    text-align: center;
+}
+
+.text-above, .text-below {
+    font-size: 18px;
+    color: #ffffff; /* Color del texto */
+    text-align: center;
+    margin: 10px 0;
+    transition: transform 0.5s ease, background-color 0.5s ease;
+}
+
+.text-above.highlighted, .text-below.highlighted {
+    transform: translateY(20px); /* Mover hacia abajo */
+}
+
+select {
+    font-weight: normal;
+    padding: 12px;    
+    font-size: 12px;    
+    border: 0px solid #ccc;
+    border-radius: 0px;
+}
+
+h1 {
+    font-size: 30px; 
+    font-weight: normal;
+    color: white;
+}
+
+/* .dropdown
+{
+    
+} */

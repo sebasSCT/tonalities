@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Escalas</title>
+		
+		<style>body {
+            font-family: 'Times New Roman', Times, serif;
+            font-weight: normal;
+            background-color: #000000;
+            text-align: center;
+            padding: 0px;
+        }
+        
+        .circle
+        {
+            z-index: -1;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: gray;
+            transition: clip-path 0.8s ease-out;
+            clip-path: circle(0% at 50% 100%);
+        }
+        
+        .circle.active
+        {
+            clip-path: circle(100% at 59% 38%);
+        }
+        
+        .container {
+            position: absolute;
+            top:0;
+            left:0;
+            width: 100%;
+            height: 100%;
+            margin: 0 auto;
+        }
+        
+        /* .container.active
+        {
+            transition: background 10s ease-in-out;
+        } */
+        
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 20px 0;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        .figures-container {
+            display: flex;
+            flex-wrap: wrap; /* Permite que las figuras pasen a otra fila si no caben en la línea */
+            justify-content: center; /* Centra las figuras horizontalmente */
+            gap: 20px; /* Espacio entre figuras */
+            margin: 20px 0;
+        }
+        
+        .figure {
+            width: 80px;
+            height: 80px;
+            background-color: #7a7a7a;
+            border-radius: 0%; /* Hace que sea un círculo */
+            display: flex; /* Habilita el uso de flexbox dentro de la figura */
+            align-items: center; /* Centra verticalmente el contenido */
+            justify-content: center; /* Centra horizontalmente el contenido */
+            font-size: 22px; /* Tamaño de la fuente del texto */
+            color: rgb(0, 0, 0); /* Color del texto */
+            text-align: center; /* Asegura que el texto se centre si es multilinea */
+            font-weight: normal;
+            transition: transform 0.5s ease, background-color 0.5s ease;
+        }
+        
+        .figure.highlighted {
+            transform: translateY(20px); /* Mover hacia abajo */
+        }
+        
+        .figure-wrapper {
+            display: flex;
+            flex-direction: column; /* Coloca los elementos en columna */
+            align-items: center; /* Centra horizontalmente los elementos */
+            text-align: center;
+        }
+        
+        .text-above, .text-below {
+            font-size: 18px;
+            color: #ffffff; /* Color del texto */
+            text-align: center;
+            margin: 10px 0;
+            transition: transform 0.5s ease, background-color 0.5s ease;
+        }
+        
+        .text-above.highlighted, .text-below.highlighted {
+            transform: translateY(20px); /* Mover hacia abajo */
+        }
+        
+        select {
+            font-weight: normal;
+            padding: 12px;    
+            font-size: 12px;    
+            border: 0px solid #ccc;
+            border-radius: 0px;
+        }
+        
+        h1 {
+            font-size: 30px; 
+            font-weight: normal;
+            color: white;
+        }
+        
+        /* .dropdown
+        {
+            
+        } */
+        </style>
+		<script>
+            function changeScale() {
+                const selectedNote = document.getElementById("note").value;
+                const selectedScale = document.getElementById("scale").value;
+            
+                const notes = ["A","A#/Bb","B","C","C#/Db","D","D#/Eb","E","F","F#/Gb","G","G#/Ab"];
+                const tonalities = ["I","II","III","IV","V","VI","VII"];
+            
+                const scales = [[1,1,0,1,1,1,0],  //  Jonico: 0
+                                [1,0,1,1,1,0,1],  //  Dorico: 1
+                                [0,1,1,1,0,1,1],  //  Frigio: 2
+                                [1,1,1,0,1,1,0],  //  Lidio: 3
+                                [1,1,0,1,1,0,1],  //  Mixolidio: 4
+                                [1,0,1,1,0,1,1],  //  Eolico: 5
+                                [0,1,1,0,1,1,1]]; // Locrio: 6
+                
+                let scale = [];
+                let chords = new Map();
+            
+                // Definir la escala
+                scale.push(parseInt(selectedNote));
+                for (let i = parseInt(selectedNote), j = 0; j < 6;  j++)
+                {   
+                    i += scales[parseInt(selectedScale)][j]
+                    i = (i >= 12) ? 1 : i + 1;
+                    scale.push(i);
+                }          
+                
+                // Definir acordes
+                const scaleAux = scale.slice();
+                scaleAux.sort((a, b) => a - b);
+                for (let i = 0; i < scaleAux.length; i++)
+                {
+                    const dis = (scaleAux[i] - (scaleAux[(i + 2) - ((i < 5)? 0 : 7)] + ((i < 5)? 0 : 12)))*-1;
+                    const dis2 = (scaleAux[i] - (scaleAux[(i + 4) - ((i < 3)? 0 : 7)] + ((i < 3)? 0 : 12)))*-1;
+            
+                    if (dis == 4)
+                    {
+                        chords.set(scaleAux[i], notes[scaleAux[i]-1]);
+                    }
+                    else if (dis == 2)
+                    {
+                        chords.set(scaleAux[i], notes[scaleAux[i]-1] + "sus2*");
+                    }
+                    else if (dis == 5)
+                    {
+                        chords.set(scaleAux[i], notes[scaleAux[i]-1] + "sus4*");
+                    }
+                    else if (dis == 3)
+                    {
+                        if (dis2 == 6)
+                        {
+                            chords.set(scaleAux[i], notes[scaleAux[i]-1] + "dim");
+                            continue;
+                        }
+                        chords.set(scaleAux[i], notes[scaleAux[i]-1] + "m");
+                    }
+                    
+                }
+            
+                // Actualizar las figuras y los textos
+                for (let i = 1; i <= 12; i++)
+                {
+                    const square = document.getElementById(`sq${i}`);
+                    const textAbove = document.getElementById(`text-above-${i}`);
+                    const textBelow = document.getElementById(`text-below-${i}`);
+            
+                    for (let j = 0; j <= scale.length; j++)
+                    {
+            
+                        if (i == scale[j])
+                        {
+                            // Cambiar color de la figura
+                            square.style.backgroundColor = "#ffffff";
+                            square.classList.add("highlighted")
+            
+                            // Cambiar textos
+                            textAbove.textContent = `${tonalities[j]}`;
+                            textAbove.classList.add("highlighted");
+                            textBelow.textContent = chords.get(i);
+                            textBelow.classList.add("highlighted");
+            
+                            break;
+                        }
+            
+                        // Cambiar color de la figura
+                        square.style.backgroundColor = "#858585";
+                        square.classList.remove("highlighted");
+            
+                        // Cambiar textos
+                        textAbove.textContent = "‎";
+                        textAbove.classList.remove("highlighted");
+                        textBelow.textContent = "‎";
+                        textBelow.classList.remove("highlighted");
+            
+                    }
+                }
+            
+            }
+            
+            function changeColor()
+            {
+                const selectedScale = document.getElementById("scale").value;
+                const circle = document.querySelector(".circle");
+            
+                const gradientMap = {
+                    "0": "linear-gradient(to right, #7e1f03, #7a0505)",
+                    "1": "linear-gradient(to right, #051d50, #525007)",
+                    "2": "linear-gradient(to right, #051d50, #1d0858)",
+                    "3": "linear-gradient(to right, #7e1f03, #525007)",
+                    "4": "linear-gradient(to right, #7e1f03, #095858)",
+                    "5": "linear-gradient(to right, #051d50, #095858)",
+                    "6": "linear-gradient(to right, #000000, #555555)",
+                };                  
+            
+                const newGradient = gradientMap[selectedScale];
+                
+                circle.style.background = newGradient;
+                circle.classList.add('active');
+            
+                setTimeout(function() {
+                    circle.classList.remove('active');
+                    document.body.style.background = newGradient;
+                }, 300);
+            
+            }
+            </script>
+	</head>
+	<body onload="changeScale(), changeColor()">
+		<div class="circle"></div>
+		<div class="container">
+			
+			<h1>Escalas</h1>
+
+			<br><br><br><br><br>
+
+			<select class="dropdown" name="Notas" id="note" onchange="changeScale()">
+				<option value="1">A</option>
+				<option value="2">A#/Bb</option>
+				<option value="3">B</option>
+				<option value="4">C</option>
+				<option value="5">C#/Db</option>
+				<option value="6">D</option>
+				<option value="7">D#/Eb</option>
+				<option value="8">E</option>
+				<option value="9">F</option>
+				<option value="10">F#/Gb</option>
+				<option value="11">G</option>
+				<option value="12">G#/Ab</option>
+			</select>
+
+			<select onchange="changeScale(), changeColor()" class="dropdown" name="Escalas" id="scale">
+				<option value="0">Jónico</option>
+				<option value="1">Dórico</option>
+				<option value="2">Frigio</option>
+				<option value="3">Lidio</option>
+				<option value="4">Mixolidio</option>
+				<option value="5">Eólico</option>
+				<option value="6">Locrio</option>
+			</select>
+			
+			<br><br><br><br>
+			<div class="figures-container">
+				<div class="figure-wrapper" id="wrapper1">
+					<div class="text-above" id="text-above-1"></div>
+					<div class="figure" id="sq1">A</div>
+					<div class="text-below" id="text-below-1"></div>
+				</div>
+				<div class="figure-wrapper" id="wrapper2">
+					<div class="text-above" id="text-above-2"></div>
+					<div class="figure" id="sq2">A#/Bb</div>
+					<div class="text-below" id="text-below-2"></div>
+				</div>
+				<div class="figure-wrapper" id="wrapper3">
+					<div class="text-above" id="text-above-3"></div>
+					<div class="figure" id="sq3">B</div>
+					<div class="text-below" id="text-below-3"></div>
+				</div>
+				<div class="figure-wrapper" id="wrapper4">
+					<div class="text-above" id="text-above-4"></div>
+					<div class="figure" id="sq4">C</div>
+					<div class="text-below" id="text-below-4"></div>
+				</div>
+				<div class="figure-wrapper" id="wrapper5">
+					<div class="text-above" id="text-above-5"></div>
+					<div class="figure" id="sq5">C#/Db</div>
+					<div class="text-below" id="text-below-5"></div>
+				</div>
+				<div class="figure-wrapper" id="wrapper6">
+					<div class="text-above" id="text-above-6"></div>
+					<div class="figure" id="sq6">D</div>
+					<div class="text-below" id="text-below-6"></div>
+				</div>
+				<div class="figure-wrapper" id="wrapper7">
+					<div class="text-above" id="text-above-7"></div>
+					<div class="figure" id="sq7">D#/Eb</div>
+					<div class="text-below" id="text-below-7"></div>
+				</div>
+				<div class="figure-wrapper" id="wrapper8">
+					<div class="text-above" id="text-above-8"></div>
+					<div class="figure" id="sq8">E</div>
+					<div class="text-below" id="text-below-8"></div>
+				</div>
+				<div class="figure-wrapper" id="wrapper9">
+					<div class="text-above" id="text-above-9"></div>
+					<div class="figure" id="sq9">F</div>
+					<div class="text-below" id="text-below-9"></div>
+				</div>
+				<div class="figure-wrapper" id="wrapper10">
+					<div class="text-above" id="text-above-10"></div>
+					<div class="figure" id="sq10">F#/Gb</div>
+					<div class="text-below" id="text-below-10"></div>
+				</div>
+				<div class="figure-wrapper" id="wrapper11">
+					<div class="text-above" id="text-above-11"></div>
+					<div class="figure" id="sq11">G</div>
+					<div class="text-below" id="text-below-11"></div>
+				</div>
+				<div class="figure-wrapper" id="wrapper12">
+					<div class="text-above" id="text-above-12"></div>
+					<div class="figure" id="sq12">G#/Ab</div>
+					<div class="text-below" id="text-below-12"></div>
+				</div>
+			
+			</div>
+
+		</div>
+
+		
+	</body>
+	</html>
