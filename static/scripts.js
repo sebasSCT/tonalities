@@ -21,10 +21,10 @@ function changeScale() {
     scale.push(parseInt(selectedNote));
     for (let i = parseInt(selectedNote), j = 0; j < 6;  j++)
     {   
-        i += scales[parseInt(selectedScale)][j]
         i = (i >= 12) ? 1 : i + 1;
+        i += scales[parseInt(selectedScale)][j]
         scale.push(i);
-    }          
+    }
     
     // Definir acordes
     const scaleAux = scale.slice();
